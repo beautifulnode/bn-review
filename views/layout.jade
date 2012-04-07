@@ -1,0 +1,34 @@
+!!!
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/css/bootstrap-responsive.min.css')
+    link(rel='stylesheet', href='/css/app.css')
+    body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          a.brand(href='/') 
+            img(src=bnImageUrl, style="height:25px;width:25px;")
+            | &nbsp;BeautifulNode
+          .nav-collapse
+            ul.nav
+              li
+                a(href='/') Top Modules
+              li
+                a(href='/reviews') Reviews
+              li
+                a(href='/about') About
+    
+    .container
+      .span8
+        != body
+      .span3
+        .well
+          center: img(src=bnImageUrl)
+          h1 BeautifulNode
+          p Short Developer Reviews of NodeJs Modules
+    script(src='http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js')
+    script(src='/js/bootstrap.min.js')
+    script(src="/js/app.js")

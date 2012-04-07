@@ -1,0 +1,24 @@
+h1 
+  | Reviews
+  span(style='color:green;') ->
+p Recent List of NodeJs Module Reviews
+form.well
+  p
+    input.input-medium.search-query(type='text', style="width:75%", placeholder='find review')
+    | &nbsp;&nbsp;
+    button.btn(type='submit') Search
+    | &nbsp;&nbsp;
+    a.btn.btn-primary(href="/reviews/new") New
+ul(style='list-style:none;')
+  each review in reviews
+    li
+      .row(style="margin-bottom: 10px;")
+        .span1
+          img(src=review.authorImageUrl)
+        .span6 
+          span(style='float: right;')
+            = review.timeAgo()
+          .review-header
+            h3: a(href="/reviews/#{review.link()}") #{review.module} reviewed by #{review.author}
+          .review-contents.well 
+            !{review.html()}

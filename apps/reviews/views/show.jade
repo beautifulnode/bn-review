@@ -1,0 +1,16 @@
+div(style="float: right;")
+  img(src=review.authorImageUrl)
+h2 
+  | Review for #{review.module}
+  span(style="font-size: .6em;")
+    a(href="/reviews/#{review.link()}/edit") Edit
+    | &nbsp;
+    a(href="/reviews/#{review.link()}/delete") Delete
+h3 By #{review.author}
+h3 #{review.timeAgo()}
+hr
+.row
+.span4
+  img(src="http://cdn.memegenerator.net/instances/400x/18041669.jpg", style="max-width:100%")
+.span3
+  .review !{review.html()}

@@ -1,0 +1,25 @@
+h1 
+  | Edit Review
+  span(style='color:green;') ->
+p Edit your review of a NodeJs Module
+
+form.well(method="POST", action="/reviews/#{review.link()}")
+  input(type='hidden', name="_method", value="put")
+  p
+    label Module Name
+      input(type="text", name="module", placeholder="Enter module", value=review.module)
+  p
+    label Meme Phrase
+      textarea(name="phrase", style="width: 80%")= review.phrase
+      span.help-inline
+        a.btn.btn-info(data-toggle='modal', href="#memehelp") Info
+  p
+    label Review
+      textarea(name="contents", style="width: 80%;", rows=5)= review.contents
+    p.help-block Markdown Supported...
+  p
+    button.btn.btn-primary Submit
+    | &nbsp;&nbsp;&nbsp;
+    a.btn.btn-danger(href='/reviews') Cancel
+
+include meme-help
