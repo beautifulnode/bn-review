@@ -14,12 +14,8 @@ html
             | &nbsp;BeautifulNode
           .nav-collapse
             ul.nav
-              li
-                a(href='/') Top Modules
-              li
-                a(href='/reviews') Reviews
-              li
-                a(href='/about') About
+              each item in menu
+                li(class=item.class): a(href=item.href)= item.name
     
     .container
       .span8

@@ -31,6 +31,9 @@ app.configure('production', function(){
 // helpers
 require('./apps/helpers')(app)
 // Routes
+app.get('/about', function(req, res) {
+  res.render('about', {title: 'About Beautiful Node - A module review site for the nodejs community'})
+});
 require('./apps/modules/routes')(app)
 require('./apps/reviews/routes')(app)
 
