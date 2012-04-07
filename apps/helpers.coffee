@@ -10,5 +10,9 @@ helpers = (app) ->
         {name: 'Reviews', href: '/reviews', class: if tab is 'reviews' then 'active' else ''}
         {name: 'About', href: '/about', class: if tab is 'about' then 'active' else ''} 
       ]
+    loggedIn: (req, res)->
+      if req.session.currentUser? then true else false
+      
+    #gravatar: (email) -> gravatar(email)
 module.exports = helpers
   

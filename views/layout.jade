@@ -5,7 +5,9 @@ html
     link(rel='stylesheet', href='/css/bootstrap.min.css')
     link(rel='stylesheet', href='/css/bootstrap-responsive.min.css')
     link(rel='stylesheet', href='/css/app.css')
-    body
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    
+  body
     .navbar.navbar-fixed-top
       .navbar-inner
         .container
@@ -16,7 +18,14 @@ html
             ul.nav
               each item in menu
                 li(class=item.class): a(href=item.href)= item.name
-    
+          .pull-right
+            if loggedIn
+              a.brand(href='#', data-delete="#logout") Logout
+              form(id="logout", method="post", action="/sessions")
+                input(type="hidden", name="_method", value="delete")
+            else
+              a.brand(href='/signup') Sign Up
+              a.brand(href="/login") Login
     .container
       .span8
         != body

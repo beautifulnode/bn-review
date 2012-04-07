@@ -5,7 +5,10 @@ h2
   span(style="font-size: .6em;")
     a(href="/reviews/#{review.link()}/edit") Edit
     | &nbsp;
-    a(href="/reviews/#{review.link()}/delete") Delete
+    a(href="#", data-delete="#review") Delete
+    form(id="review", action="/reviews/#{review.link()}", method="POST")
+      input(type='hidden', name="_method", value="delete")
+
 h3 By #{review.author}
 h3 #{review.timeAgo()}
 hr

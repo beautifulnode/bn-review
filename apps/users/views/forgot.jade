@@ -1,0 +1,9 @@
+h1 Forgot Username or Password
+
+form(method="post", action="/forgot")
+  p
+    label Email
+      input(name="email", type="email")
+    p.help-block Provide your e-mail and we will email you a link to reset your login information.
+  p
+    button.btn.btn-primary Submit

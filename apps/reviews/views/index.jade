@@ -2,9 +2,9 @@ h1
   | Reviews
   span(style='color:green;') ->
 p Recent List of NodeJs Module Reviews
-form.well
+form.well(method='get', action='/reviews/search')
   p
-    input.input-medium.search-query(type='text', style="width:75%", placeholder='find review')
+    input.input-medium.search-query(name="module", type='text', style="width:60%", placeholder='find review by module')
     | &nbsp;&nbsp;
     button.btn(type='submit') Search
     | &nbsp;&nbsp;
@@ -14,7 +14,7 @@ ul(style='list-style:none;')
     li
       .row(style="margin-bottom: 10px;")
         .span1
-          img(src=review.authorImageUrl)
+          img(src=review.authorImageUrl, style="padding: 20px;max-width: 80%;")
         .span6 
           span(style='float: right;')
             = review.timeAgo()
