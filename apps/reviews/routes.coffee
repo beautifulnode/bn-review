@@ -26,23 +26,32 @@ routes = (app) ->
   # GET /reviews/:link
   app.get '/reviews/:link', (req, res) ->
     Review.get req.params.link.split('-').shift(), (err, review) ->
-      res.render view('show'), title: review.link(), review: review
+      res.render view('show'), title: review.link(), review: review, email: req.session.currentEmail
 
   # GET /reviews/:link/edit
   app.get '/reviews/:link/edit', auth(), (req, res) ->
     Review.get req.params.link.split('-').shift(), (err, review) ->
-      res.render view('edit'), title: "Edit - #{review.link()}", review: review
+      if review.canEdit(req.session.currentEmail)
+        res.render view('edit'), title: "Edit - #{review.link()}", review: review
+      else
+        res.redirect '/reviews', title: 'Reviews'
 
   # PUT /reviews/:link
   app.put '/reviews/:link', auth(), (req, res) ->
     Review.get req.params.link.split('-').shift(), (err, review) ->
-      review.update req.body, (err, review) ->
-        res.render view('show'), title: review.link(), review: review
+      if review.canEdit(req.session.currentEmail)
+        review.update req.body, (err, review) ->
+          res.render view('show'), title: review.link(), review: review
+      else
+        res.redirect '/reviews', title: 'Reviews'
 
   # DELETE /reviews/:link
   app.del '/reviews/:link', auth(), (req, res) ->
     Review.get req.params.link.split('-').shift(), (err, review) ->
-      review.destroy (err, result) ->
-        res.redirect '/reviews'
+      if review.canDelete(req.session.currentEmail)
+        review.destroy (err, result) ->
+          res.redirect '/reviews'
+      else
+        res.redirect '/reviews', title: 'Reviews'
 
 module.exports = routes

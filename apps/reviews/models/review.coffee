@@ -21,8 +21,12 @@ Review = resourceful.define 'review', ->
 Review::html = -> ghm.parse @contents
 Review::timeAgo = -> moment(@ctime).fromNow()
 Review::link = -> "#{@_id}-#{@slug}"
+Review::canEdit = (email) ->
+  if email is @author then true else false
+Review::canDelete = (email) ->
+  if email is @author then true else false
+
 Review.build = (review, cb) ->
-  console.log review
   review.slug = review.module.toLowerCase().replace(/\s+/g,'-') + review.phrase.toLowerCase().replace(/\s+/g,'-')
   review.author = review.author || 'tom@jackhq.com'
   review.authorImageUrl = gravatar(review.author)

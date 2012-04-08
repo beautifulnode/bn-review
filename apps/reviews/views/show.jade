@@ -3,11 +3,13 @@ div(style="float: right;")
 h2 
   | Review for #{review.module}
   span(style="font-size: .6em;")
-    a(href="/reviews/#{review.link()}/edit") Edit
-    | &nbsp;
-    a(href="#", data-delete="#review") Delete
-    form(id="review", action="/reviews/#{review.link()}", method="POST")
-      input(type='hidden', name="_method", value="delete")
+    if review.canEdit(email)
+      a(href="/reviews/#{review.link()}/edit") Edit
+      | &nbsp;
+    if review.canDelete(email)
+      a(href="#", data-delete="#review") Delete
+      form(id="review", action="/reviews/#{review.link()}", method="POST")
+        input(type='hidden', name="_method", value="delete")
 
 h3 By #{review.author}
 h3 #{review.timeAgo()}

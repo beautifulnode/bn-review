@@ -12,7 +12,6 @@ helpers = (app) ->
       ]
     loggedIn: (req, res)->
       if req.session.currentUser? then true else false
-      
     #gravatar: (email) -> gravatar(email)
 module.exports = helpers
   
