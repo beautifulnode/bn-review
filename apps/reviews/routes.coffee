@@ -19,6 +19,7 @@ routes = (app) ->
 
   # POST /reviews
   app.post '/reviews', auth(), (req, res) ->
+    req.body.author = req.session.currentEmail
     Review.build req.body, (err, review) ->
       res.redirect '/reviews'
 

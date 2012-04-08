@@ -19,9 +19,10 @@ User = resourceful.define 'user', ->
   @timestamps
 
 User::authenticate = (password, cb) ->
+  user = this
   bcrypt.compare password, @hash, (err, res) ->
     unless err?
-      cb(null, this)
+      cb(null, user)
     else
       cb(new Error('INVALID PASSWORD'), null)
 
@@ -35,7 +36,6 @@ User.build = (user, cb) ->
       delete user.password
       delete user.confirmation
       user.hash = hash
-      console.log user
       User.create user, cb 
 
 unless process.env.NODE_ENV is 'production'

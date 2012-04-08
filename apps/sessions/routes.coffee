@@ -15,6 +15,7 @@ routes = (app) ->
       if users?[0]?
         users[0].authenticate req.body.password, (err, user) ->
           req.session.currentUser = req.body.username
+          req.session.currentEmail = user.email
           req.flash 'info', "You are now logged in as #{req.session.currentUser}."
           res.redirect '/'
           return
