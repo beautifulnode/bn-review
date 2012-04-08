@@ -10,7 +10,6 @@ Review = resourceful.define 'review', ->
     auth:
       username: 'admin'
       password: 'admin'
-    #appConfig[process.env.NODE_ENV or 'development'].couch
   @string 'module'
   @string 'contents'
   @string 'phrase'
