@@ -6,12 +6,12 @@ routes = (app) ->
   # GET /reviews/search
   app.get '/reviews/search', (req, res) ->
     Review.find { module: req.body.module }, (err, reviews) ->
-      res.render view('index'), title: 'Reviews', reviews: reviews
+      res.render view('index'), title: 'Reviews', reviews: (reviews or [])
 
   # GET /reviews
   app.get '/reviews', (req, res) ->
     Review.all (err, reviews) ->
-      res.render view('index'), title: 'Reviews', reviews: reviews
+      res.render view('index'), title: 'Reviews', reviews: (reviews or [])
 
   # GET /reviews/new
   app.get '/reviews/new', auth(), (req, res) ->

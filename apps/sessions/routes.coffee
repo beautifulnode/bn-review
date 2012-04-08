@@ -7,16 +7,20 @@ routes = (app) ->
       title: 'Login'
 
   app.post '/sessions', (req, res) ->
-    # Logging in
-    User.find {username: req.body.username}, (err, users) ->
-      unless err?
-        console.log req.body.username
-        req.session.currentUser = req.body.username
-        req.flash 'info', "You are now logged in as #{req.session.currentUser}."
-        res.redirect '/'
-        return
+    invalidLogin = ->
       req.flash 'error', 'Those credentials were incorrect. Please login again.'
       res.redirect '/login'
+    # Logging in
+    User.find username: req.body.username, (err, users) ->
+      if users?[0]?
+        users[0].authenticate req.body.password, (err, user) ->
+          req.session.currentUser = req.body.username
+          req.flash 'info', "You are now logged in as #{req.session.currentUser}."
+          res.redirect '/'
+          return
+          invalidLogin()
+      else
+        invalidLogin()
 
   app.del '/sessions', (req, res) ->
     req.session.regenerate (err) ->

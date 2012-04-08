@@ -1,16 +1,17 @@
 resourceful = require 'resourceful'
+appConfig = require __dirname + '/../../config'
 ghm = require("github-flavored-markdown")
 moment = require 'moment'
 gravatar = require __dirname + '/../../lib/gravatar'
 
 Review = resourceful.define 'review', ->
+  @use 'couchdb', appConfig[process.env.NODE_ENV or 'development'].couch
   @string 'module'
   @string 'contents'
   @string 'phrase'
   @string 'memeUrl'
   @string 'author'
   @string 'authorImageUrl'
-
   @timestamps
 
 Review::html = -> ghm.parse @contents
@@ -22,11 +23,17 @@ Review.build = (review, cb) ->
   review.authorImageUrl = gravatar(review.author)
   
   # TODO generate imageUrl Link
-  Review.create review, cb
+  Review.create review, (err, review) ->
+    review.save (err) ->
+      console.log err if err?
+      cb null, review if cb?
 
 unless process.env.NODE_ENV is 'production'
-  Review.build
-    module: 'Foo'
-    contents: "### I give this module a High Five\n\nhttp://google.com"
-    phrase: 'AWESOME SAUCE'
+  Review.find module: 'Foo', (err, reviews) ->
+    unless reviews?[0]?
+      Review.build
+        module: 'Foo'
+        contents: "### I give this module a High Five\n\nhttp://google.com"
+        phrase: 'AWESOME SAUCE'
+
 module.exports = Review

@@ -13,12 +13,12 @@ User = resourceful.define 'user', ->
 
   @timestamps
 
-User::authorize = (password, cb) ->
+User::authenticate = (password, cb) ->
   bcrypt.compare password, @hash, (err, res) ->
     unless err?
-      cb(null, user)
-    # else
-    #   cb(new Error('INVALID PASSWORD'), null
+      cb(null, this)
+    else
+      cb(new Error('INVALID PASSWORD'), null)
 
 User.build = (user, cb) ->
   # generate password stuff
@@ -26,15 +26,21 @@ User.build = (user, cb) ->
   bcrypt.genSalt 10, (err, salt) -> 
     user.salt = salt
     bcrypt.hash user.password, salt, (err, hash) -> 
+      # remove password entry
       delete user.password
+      delete user.confirmation
       user.hash = hash
       console.log user
       User.create user, cb 
 
 unless process.env.NODE_ENV is 'production'
-  User.build
-    username: 'admin'
-    password: 'admin'
-    email: 'tom@jackhq.com'
+  User.find username: 'admin', (err, users) ->
+    unless users?[0]?
+      User.build
+        username: 'admin'
+        password: 'admin'
+        email: 'tom@jackhq.com'
+        (e, user) -> user.save (err) -> 
+          console.log err if err?
 
 module.exports = User
