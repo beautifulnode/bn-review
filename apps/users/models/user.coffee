@@ -4,7 +4,13 @@ bcrypt = require 'bcrypt'
 crypto = require 'crypto'
 
 User = resourceful.define 'user', ->
-  @use 'couchdb', appConfig[process.env.NODE_ENV or 'development'].couch
+  @use 'couchdb', 
+    #appConfig[process.env.NODE_ENV or 'development'].couch
+    uri: 'couchdb://nodejitsudb809450223798.iriscouch.com:5984/bn3'
+    auth:
+      username: 'admin'
+      password: 'admin'
+
   @string 'username'
   @string 'hash'
   @string 'salt'

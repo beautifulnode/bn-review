@@ -5,7 +5,12 @@ moment = require 'moment'
 gravatar = require __dirname + '/../../lib/gravatar'
 
 Review = resourceful.define 'review', ->
-  @use 'couchdb', appConfig[process.env.NODE_ENV or 'development'].couch
+  @use 'couchdb', 
+    uri: 'couchdb://nodejitsudb809450223798.iriscouch.com:5984/bn3'
+    auth:
+      username: 'admin'
+      password: 'admin'
+    #appConfig[process.env.NODE_ENV or 'development'].couch
   @string 'module'
   @string 'contents'
   @string 'phrase'
