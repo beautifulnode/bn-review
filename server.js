@@ -1,26 +1,33 @@
 require('coffee-script');
 
 var express = require('express'),
+  redis = require('redis'),
+  appConfig = require('./apps/config')
   RedisStore = require('connect-redis')(express);
+
+var client = null;
+
+// it would be nice to figure out a better
+// way to do this...
+if (process.env.NODE_ENV == 'production') {
+  client = redis.createClient(appConfig.production.redis.port, appConfig.production.redis.host);
+  client.auth(appConfig.production.redis.password);
+} else {
+  client = redis.createClient();
+}
 
 var app = module.exports = express.createServer();
 
 // Configuration
-var options = {};
-if(process.env.NODE_ENV == "production") {
-  options.host = "catfish.redistogo.com";
-  options.port = 9124;
-  options.user = "nodejitsu";
-  options.password = "e041495d97e146cf9bfcf383c0ebfd68"
-}
-
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.set('port', 3000)
   app.use(express.cookieParser());
   app.use(express.session({
-    store: new RedisStore(options),
+    store: new RedisStore({
+      client: client 
+    }),
     secret: "WhoWhatWhenWhereWhyEverybody"
   }));
   app.use(express.bodyParser());

@@ -10,7 +10,8 @@ routes = (app) ->
     # Logging in
     User.find {username: req.body.username}, (err, users) ->
       unless err?
-        req.session.currentUser = users[0].username
+        console.log req.body.username
+        req.session.currentUser = req.body.username
         req.flash 'info', "You are now logged in as #{req.session.currentUser}."
         res.redirect '/'
         return
