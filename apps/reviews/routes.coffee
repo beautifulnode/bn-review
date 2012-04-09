@@ -21,7 +21,7 @@ routes = (app) ->
   app.post '/reviews', auth(), (req, res) ->
     req.body.author = req.session.currentEmail
     Review.build req.body, (err, review) ->
-      res.redirect '/reviews'
+      res.render view('show'), title: review.link(), review: review, email: req.session.currentEmail
 
   # GET /reviews/:link
   app.get '/reviews/:link', (req, res) ->
