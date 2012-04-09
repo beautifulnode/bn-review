@@ -15,10 +15,10 @@ instanceCreate = (generatorID, imageID, text0, text1, cb) ->
 
 match = (input, exp) ->
   res = input.match(exp)
-  [ res[1] or null, res[2] or null]
+  [ res?[1] or null, res?[2] or null]
 
 memes = [
-  { phrase: /Y U NO (.+)/i, generateID: 2, imageID: 166088 }
+  { phrase: /(Y U NO) (.+)/i, generateID: 2, imageID: 166088 }
   { phrase: /(I DON'?T ALWAYS .*) (BUT WHEN I DO,? .*)/i, generateID: 74, imageID: 2485 }
   { phrase: /(.*)(O\s?RLY\??.*)/i, generateID: 920, imageID: 117049 }
   { phrase: /(.*)(SUCCESS|NAILED IT.*)/i, generateID: 121, imageID: 1031 }
@@ -38,4 +38,4 @@ module.exports = (input, cb) ->
     if text? and text2?
       selectedMeme = meme
       break
-  instanceCreate generateID, imageID, text, text2, cb
+  instanceCreate selectedMeme.generateID, selectedMeme.imageID, text, text2, cb
