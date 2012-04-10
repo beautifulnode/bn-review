@@ -16,7 +16,7 @@ User = resourceful.define 'user', ->
   @string 'email'
   @array 'roles'
 
-  @timestamps
+  @timestamps()
 
 User::authenticate = (password, cb) ->
   user = this

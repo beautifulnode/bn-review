@@ -17,9 +17,14 @@ Review = resourceful.define 'review', ->
   @string 'memeUrl'
   @string 'author'
   @string 'authorImageUrl'
-  @timestamps
+  @timestamps()
 
-Review::html = -> ghm.parse @contents
+Review::html = -> 
+  try
+    ghm.parse @contents
+  catch err
+    @contents
+
 Review::timeAgo = -> moment(@ctime).fromNow()
 Review::link = -> "#{@_id}-#{@slug}"
 Review::canEdit = (email) ->
