@@ -11,11 +11,14 @@ h2
       form(id="review", action="/reviews/#{review.link()}", method="POST")
         input(type='hidden', name="_method", value="delete")
 
-h3 By #{review.author}
-h3 #{review.timeAgo()}
+h3(style="float:right;margin-right:20px;") #{review.timeAgo()}
+h3(style="float:right;margin-right:20px;") By #{review.author}
+
 hr
 .row
 .span3
   img(src=review.memeUrl, style="max-width:100%")
 .span4
-  .review !{review.html()}
+  .review 
+    !{review.html()}
+    a.btn.btn-primary(href="/reviews") Return to Reviews

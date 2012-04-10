@@ -2,6 +2,7 @@ request = require 'request'
 memeGenerator = 'http://version1.api.memegenerator.net/Instance_Create'
 imageUri = 'http://images.memegenerator.net/instances'
 [username, password, languageCode] = ['jackhq', 'foobar63', 'en']
+
 instanceCreate = (generatorID, imageID, text0, text1, cb) ->
   request memeGenerator, 
     form: { username, password, languageCode, generatorID, imageID, text0, text1 }

@@ -20,5 +20,10 @@ ul(style='list-style:none;')
             = review.timeAgo()
           .review-header
             h3: a(href="/reviews/#{review.link()}") #{review.module} reviewed by #{review.author}
-          .review-contents.well 
-            !{review.html()}
+          .review-contents 
+            .span3
+              !{review.html()}
+            .span2
+              a(href="/reviews/#{review.link()}") 
+                img(src=review.memeUrl, style="max-width:80%")
+            
