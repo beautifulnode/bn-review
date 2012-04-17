@@ -1,3 +1,4 @@
+mrclean = require 'mrclean'
 resourceful = require 'resourceful'
 appConfig = require __dirname + '/../../config'
 ghm = require("github-flavored-markdown")
@@ -33,15 +34,17 @@ Review::canDelete = (email) ->
   if email is @author then true else false
 
 Review.build = (review, cb) ->
-  review.slug = review.module.toLowerCase().replace(/\s+/g,'-') + review.phrase.toLowerCase().replace(/\s+/g,'-')
-  review.author = review.author || 'tom@jackhq.com'
-  review.authorImageUrl = gravatar(review.author)
-  meme review.phrase, (err, url) ->
-    review.memeUrl = url
-    Review.create review, (err, review) ->
-      review.save (err) ->
-        console.log err if err?
-        cb null, review if cb?
+  mrclean().clean review.content or '', (err, cleanHtml) ->
+    review.content = cleanHtml
+    review.slug = review.module.toLowerCase().replace(/\s+/g,'-') + review.phrase.toLowerCase().replace(/\s+/g,'-')
+    review.author = review.author || 'tom@jackhq.com'
+    review.authorImageUrl = gravatar(review.author)
+    meme review.phrase, (err, url) ->
+      review.memeUrl = url
+      Review.create review, (err, review) ->
+        review.save (err) ->
+          console.log err if err?
+          cb null, review if cb?
 
 unless process.env.NODE_ENV is 'production'
   Review.find module: 'Foo', (err, reviews) ->
