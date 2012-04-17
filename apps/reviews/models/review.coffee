@@ -35,7 +35,7 @@ Review::canDelete = (email) ->
 
 Review.build = (review, cb) ->
   mrclean().clean review.contents, (err, cleanHtml) ->
-    review.content = cleanHtml
+    review.contents = cleanHtml
     review.slug = review.module.toLowerCase().replace(/\s+/g,'-') + review.phrase.toLowerCase().replace(/\s+/g,'-')
     review.author = review.author || 'tom@jackhq.com'
     review.authorImageUrl = gravatar(review.author)
