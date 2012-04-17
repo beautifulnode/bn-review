@@ -21,7 +21,7 @@ Review = resourceful.define 'review', ->
   @timestamps()
 
 Review::html = -> 
-  try
+  try    
     ghm.parse @contents
   catch err
     @contents
@@ -34,8 +34,9 @@ Review::canDelete = (email) ->
   if email is @author then true else false
 
 Review.build = (review, cb) ->
-  mrclean().clean review.contents, (err, cleanHtml) ->
-    review.contents = cleanHtml
+  review.contents = ghm.parse(review.contents).replace(/\n+/g, '')
+  mrclean().clean review.contents, (err, clean) ->
+    review.contents = clean
     review.slug = review.module.toLowerCase().replace(/\s+/g,'-') + review.phrase.toLowerCase().replace(/\s+/g,'-')
     review.author = review.author || 'tom@jackhq.com'
     review.authorImageUrl = gravatar(review.author)
@@ -46,12 +47,12 @@ Review.build = (review, cb) ->
           console.log err if err?
           cb null, review if cb?
 
-unless process.env.NODE_ENV is 'production'
-  Review.find module: 'Foo', (err, reviews) ->
-    unless reviews?[0]?
-      Review.build
-        module: 'Foo'
-        contents: "### http://github.com/mikeal/request"
-        phrase: 'Request is TOO DAMN Smart'
+# unless process.env.NODE_ENV is 'production'
+#   Review.find module: 'Foo', (err, reviews) ->
+#     unless reviews?[0]?
+#       Review.build
+#         module: 'Foo'
+#         contents: "### http://github.com/mikeal/request"
+#         phrase: 'Request is TOO DAMN Smart'
 
 module.exports = Review
