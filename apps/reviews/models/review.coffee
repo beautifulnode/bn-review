@@ -34,7 +34,7 @@ Review::canDelete = (email) ->
   if email is @author then true else false
 
 Review.build = (review, cb) ->
-  mrclean().clean review.content or '', (err, cleanHtml) ->
+  mrclean().clean review.contents, (err, cleanHtml) ->
     review.content = cleanHtml
     review.slug = review.module.toLowerCase().replace(/\s+/g,'-') + review.phrase.toLowerCase().replace(/\s+/g,'-')
     review.author = review.author || 'tom@jackhq.com'
