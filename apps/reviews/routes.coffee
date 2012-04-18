@@ -11,7 +11,8 @@ routes = (app) ->
   # GET /reviews
   app.get '/reviews', (req, res) ->
     Review.all (err, reviews) ->
-      res.render view('index'), title: 'Reviews', reviews: (reviews or [])
+      details = reviews.reverse()
+      res.render view('index'), title: 'Reviews', reviews: (details or [])
 
   # GET /reviews/new
   app.get '/reviews/new', auth(), (req, res) ->
@@ -19,7 +20,7 @@ routes = (app) ->
 
   # POST /reviews
   app.post '/reviews', auth(), (req, res) ->
-    req.body.author = req.session.currentEmail
+    req.body.author = req.session.currentEmail or req.session.currentUser
     Review.build req.body, (err, review) ->
       res.render view('show'), title: review.link(), review: review, email: req.session.currentEmail
 

@@ -26,7 +26,7 @@ Review::html = ->
   catch err
     @contents
 
-Review::timeAgo = -> moment(@ctime).fromNow()
+Review::timeAgo = -> moment(@mtime).fromNow()
 Review::link = -> "#{@_id}-#{@slug}"
 Review::canEdit = (email) ->
   if email is @author then true else false
@@ -38,7 +38,7 @@ Review.build = (review, cb) ->
   mrclean().clean review.contents, (err, clean) ->
     review.contents = clean
     review.slug = review.module.toLowerCase().replace(/\s+/g,'-') + review.phrase.toLowerCase().replace(/\s+/g,'-')
-    review.author = review.author || 'tom@jackhq.com'
+    review.author = review.author || 'tom@beautifulnode.com'
     review.authorImageUrl = gravatar(review.author)
     meme review.phrase, (err, url) ->
       review.memeUrl = url
@@ -46,13 +46,5 @@ Review.build = (review, cb) ->
         review.save (err) ->
           console.log err if err?
           cb null, review if cb?
-
-# unless process.env.NODE_ENV is 'production'
-#   Review.find module: 'Foo', (err, reviews) ->
-#     unless reviews?[0]?
-#       Review.build
-#         module: 'Foo'
-#         contents: "### http://github.com/mikeal/request"
-#         phrase: 'Request is TOO DAMN Smart'
 
 module.exports = Review
